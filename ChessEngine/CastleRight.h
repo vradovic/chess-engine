@@ -1,0 +1,9 @@
+#pragma once
+
+enum class CastleRight
+{
+    BLACK_KINGSIDE_CASTLE,
+    BLACK_QUEENSIDE_CASTLE,
+    WHITE_KINGSIDE_CASTLE,
+    WHITE_QUEENSIDE_CASTLE
+};

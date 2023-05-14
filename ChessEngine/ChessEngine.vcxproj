@@ -20,10 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fenparserpp.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Square.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CastleRight.h" />
     <ClInclude Include="fenparserpp.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="PieceColor.h" />
+    <ClInclude Include="Square.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
