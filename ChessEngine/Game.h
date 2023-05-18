@@ -20,6 +20,11 @@ public:
 	Game();
 	void putPiece(Position pos, Piece pc);
 	void printBoard() const;
+	bool isInsideBoard(Position pos) const;
+	bool containsPiece(Position pos) const;
+	bool containsEnemyPiece(Position pos, PieceColor color) const;
+	bool containsOwnPiece(Position pos, PieceColor color) const;
+	std::vector<Position> getValidSquares(Position pos) const;
 
 private:
 	Piece board[8][8];

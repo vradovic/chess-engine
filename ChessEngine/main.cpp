@@ -4,13 +4,17 @@
 int main()
 {
 	auto game = Game();
-	auto fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1";
+	auto fen = "8/8/2n5/8/2R2Q2/8/8/8 w - - 0 1";
 
 	auto parser = fenparserpp::FENParser();
 	bool success = parser.parse(fen, game);
 
 	if (success)
+	{
 		game.printBoard();
-	else
-		std::cout << "Parsing failed\n";
+		auto squares = game.getValidSquares(Position{ 3, 2 });
+		for (auto square : squares)
+			std::cout << square << "\n";
+	}
+	else std::cout << "Parsing failed\n";
 }

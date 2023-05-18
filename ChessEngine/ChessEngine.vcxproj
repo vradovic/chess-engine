@@ -23,6 +23,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piece.cpp" />
+    <ClCompile Include="Position.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CastleRight.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceColor.h" />
     <ClInclude Include="PieceKind.h" />
+    <ClInclude Include="Position.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

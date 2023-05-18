@@ -120,3 +120,58 @@ void Game::printBoard() const
 		std::cout << "\n";
 	}
 }
+
+bool Game::isInsideBoard(Position pos) const
+{
+	return (pos.rank >= 0 && pos.rank < 8 && pos.file >= 0 && pos.file < 8);
+}
+
+bool Game::containsPiece(Position pos) const
+{
+	Piece pc = board[pos.rank][pos.file];
+	return pc.getKind() != PieceKind::NONE;
+}
+
+bool Game::containsEnemyPiece(Position pos, PieceColor color) const
+{
+	Piece pc = board[pos.rank][pos.file];
+	return pc.getKind() != PieceKind::NONE && pc.getColor() != color;
+}
+
+bool Game::containsOwnPiece(Position pos, PieceColor color) const
+{
+	Piece pc = board[pos.rank][pos.file];
+	return pc.getKind() != PieceKind::NONE && pc.getColor() == color;
+}
+
+std::vector<Position> Game::getValidSquares(Position pos) const
+{
+	std::vector<Position> squares;
+
+	Piece pc = board[pos.rank][pos.file];
+
+	std::vector<std::vector<int>> moves;
+
+	switch (pc.getKind())
+	{
+	case PieceKind::ROOK:
+		moves = { {1,0},{0,1},{-1,0},{0,-1} };
+		
+		for (auto move : moves)
+		{
+			Position nextPos = { pos.rank + move[0], pos.file + move[1] };
+			while (isInsideBoard(nextPos))
+			{
+				if (containsOwnPiece(nextPos, pc.getColor())) break;
+				squares.push_back(nextPos);
+				if (containsEnemyPiece(nextPos, pc.getColor())) break;
+				nextPos = { nextPos.rank + move[0], nextPos.file + move[1] };
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	return squares;
+}
