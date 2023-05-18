@@ -184,6 +184,21 @@ std::vector<Position> Game::getValidSquares(Position pos) const
 			}
 		}
 		break;
+	case PieceKind::QUEEN:
+		moves = { {1,1},{-1,1},{-1,-1},{1,-1},{1,0},{0,1},{-1,0},{0,-1} };
+
+		for (auto move : moves)
+		{
+			Position nextPos = { pos.rank + move[0], pos.file + move[1] };
+			while (isInsideBoard(nextPos))
+			{
+				if (containsOwnPiece(nextPos, pc.getColor())) break;
+				squares.push_back(nextPos);
+				if (containsEnemyPiece(nextPos, pc.getColor())) break;
+				nextPos = { nextPos.rank + move[0], nextPos.file + move[1] };
+			}
+		}
+		break;
 	default:
 		break;
 	}
