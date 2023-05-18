@@ -4,7 +4,7 @@
 int main()
 {
 	auto game = Game();
-	auto fen = "8/8/2n5/8/2R2Q2/8/8/8 w - - 0 1";
+	auto fen = "8/8/4n3/1Q6/2b5/8/8/8 w - - 0 1";
 
 	auto parser = fenparserpp::FENParser();
 	bool success = parser.parse(fen, game);
