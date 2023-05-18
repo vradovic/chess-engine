@@ -392,3 +392,21 @@ PieceColor Game::getOpposingColor(PieceColor color) const
 {
 	return color == PieceColor::WHITE ? PieceColor::BLACK : PieceColor::WHITE;
 }
+
+bool Game::isValidMove(Position source, Position target)
+{
+	Piece sourcePiece = board[source.rank][source.file];
+	Piece targetPiece = board[target.rank][target.file];
+
+	putPiece(target, sourcePiece);
+	putPiece(source, Piece());
+
+	// Check if king is in check
+	bool isInCheck = isCheck(toPlay);
+
+	// Return to original position
+	putPiece(source, sourcePiece);
+	putPiece(target, targetPiece);
+
+	return !isInCheck;
+}

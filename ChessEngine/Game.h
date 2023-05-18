@@ -33,6 +33,7 @@ public:
 	bool checkKnightThreat(Position pos, PieceColor color) const;
 	bool checkPawnThreat(Position pos, PieceColor color) const;
 	PieceColor getOpposingColor(PieceColor color) const;
+	bool isValidMove(Position source, Position target);
 
 private:
 	Piece board[8][8];
