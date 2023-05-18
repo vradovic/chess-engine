@@ -132,6 +132,12 @@ bool Game::containsPiece(Position pos) const
 	return pc.getKind() != PieceKind::NONE;
 }
 
+bool Game::containsPiece(Position pos, const Piece& pc) const
+{
+	Piece piece = board[pos.rank][pos.file];
+	return piece.getKind() == pc.getKind() && piece.getColor() == pc.getColor();
+}
+
 bool Game::containsEnemyPiece(Position pos, PieceColor color) const
 {
 	Piece pc = board[pos.rank][pos.file];
@@ -217,4 +223,110 @@ std::vector<Position> Game::getValidSquares(Position pos) const
 	}
 
 	return squares;
+}
+
+bool Game::isCheck(PieceColor color) const
+{
+	Position kingPosition = getKing(color);
+	PieceColor opposingColor = color == PieceColor::WHITE ? PieceColor::BLACK : PieceColor::WHITE;
+
+	std::vector<std::vector<int>> patterns; // Threat patterns
+
+	// Check for diagonal threats
+	if (checkDiagonalThreat(kingPosition, color)) return true;
+
+	// Check for orthogonal threats
+	if (checkOrthogonalThreat(kingPosition, color)) return true;
+
+	// Check for knight threats
+	if (checkKnightThreat(kingPosition, color)) return true;
+
+	// Check for pawn threats
+	if (checkPawnThreat(kingPosition, color)) return true;
+
+	return false;
+}
+
+bool Game::checkDiagonalThreat(Position pos, PieceColor color) const
+{
+	std::vector<std::vector<int>> patterns = { {1,1},{-1,1},{-1,-1},{1,-1} };
+	Piece enemyBishop(PieceKind::BISHOP, getOpposingColor(color));
+	Piece enemyQueen(PieceKind::QUEEN, getOpposingColor(color));
+
+	for (auto pattern : patterns)
+	{
+		Position nextPos = { pos.rank + pattern[0], pos.file + pattern[1] };
+		while (isInsideBoard(nextPos))
+		{
+			if (containsOwnPiece(nextPos, color)) break;
+			if (containsPiece(nextPos, enemyBishop) || containsPiece(nextPos, enemyQueen)) return true;
+			nextPos = { nextPos.rank + pattern[0], nextPos.file + pattern[1] };
+		}
+	}
+
+	return false;
+}
+
+bool Game::checkOrthogonalThreat(Position pos, PieceColor color) const
+{
+	std::vector<std::vector<int>> patterns = { {1,0},{0,1},{-1,0},{0,-1} };
+	Piece enemyRook(PieceKind::ROOK, getOpposingColor(color));
+	Piece enemyQueen(PieceKind::QUEEN, getOpposingColor(color));
+
+	for (auto pattern : patterns)
+	{
+		Position nextPos = { pos.rank + pattern[0], pos.file + pattern[1] };
+		while (isInsideBoard(nextPos))
+		{
+			if (containsOwnPiece(nextPos, color)) break;
+			if (containsPiece(nextPos, enemyRook) || containsPiece(nextPos, enemyQueen)) return true;
+			nextPos = { nextPos.rank + pattern[0], nextPos.file + pattern[1] };
+		}
+	}
+
+	return false;
+}
+
+bool Game::checkKnightThreat(Position pos, PieceColor color) const
+{
+	std::vector<std::vector<int>> patterns = { {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2} };
+	Piece enemyKnight(PieceKind::KNIGHT, getOpposingColor(color));
+
+	for (auto pattern : patterns)
+	{
+		Position nextPos = { pos.rank + pattern[0], pos.file + pattern[1] };
+		if (isInsideBoard(nextPos))
+		{
+			if (containsPiece(nextPos, enemyKnight)) return true;
+		}
+	}
+
+	return false;
+}
+
+bool Game::checkPawnThreat(Position pos, PieceColor color) const
+{
+	Piece pc;
+	PieceColor opposingColor = getOpposingColor(color);
+	if (color == PieceColor::WHITE)
+	{
+		pc = board[pos.rank + 1][pos.file + 1];
+		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		pc = board[pos.rank + 1][pos.file - 1];
+		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+	}
+	else
+	{
+		pc = board[pos.rank - 1][pos.file + 1];
+		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		pc = board[pos.rank - 1][pos.file - 1];
+		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+	}
+
+	return false;
+}
+
+PieceColor Game::getOpposingColor(PieceColor color) const
+{
+	return color == PieceColor::WHITE ? PieceColor::BLACK : PieceColor::WHITE;
 }

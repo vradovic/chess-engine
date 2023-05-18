@@ -22,10 +22,17 @@ public:
 	void printBoard() const;
 	bool isInsideBoard(Position pos) const;
 	bool containsPiece(Position pos) const;
+	bool containsPiece(Position pos, const Piece& pc) const;
 	bool containsEnemyPiece(Position pos, PieceColor color) const;
 	bool containsOwnPiece(Position pos, PieceColor color) const;
 	Position getKing(PieceColor color) const;
 	std::vector<Position> getValidSquares(Position pos) const;
+	bool isCheck(PieceColor color) const;
+	bool checkDiagonalThreat(Position pos, PieceColor color) const;
+	bool checkOrthogonalThreat(Position pos, PieceColor color) const;
+	bool checkKnightThreat(Position pos, PieceColor color) const;
+	bool checkPawnThreat(Position pos, PieceColor color) const;
+	PieceColor getOpposingColor(PieceColor color) const;
 
 private:
 	Piece board[8][8];
