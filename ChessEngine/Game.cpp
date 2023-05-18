@@ -144,6 +144,19 @@ bool Game::containsOwnPiece(Position pos, PieceColor color) const
 	return pc.getKind() != PieceKind::NONE && pc.getColor() == color;
 }
 
+Position Game::getKing(PieceColor color) const
+{
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			Piece pc = board[i][j];
+			if (pc.getKind() == PieceKind::KING && pc.getColor() == color)
+				return Position{ i,j };
+		}
+	}
+}
+
 std::vector<Position> Game::getValidSquares(Position pos) const
 {
 	std::vector<Position> squares;

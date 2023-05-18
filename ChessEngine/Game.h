@@ -24,6 +24,7 @@ public:
 	bool containsPiece(Position pos) const;
 	bool containsEnemyPiece(Position pos, PieceColor color) const;
 	bool containsOwnPiece(Position pos, PieceColor color) const;
+	Position getKing(PieceColor color) const;
 	std::vector<Position> getValidSquares(Position pos) const;
 
 private:
