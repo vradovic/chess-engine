@@ -218,6 +218,19 @@ std::vector<Position> Game::getValidSquares(Position pos) const
 			}
 		}
 		break;
+	case PieceKind::KNIGHT:
+		moves = { {-1, -2}, {-2, -1}, {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2} };
+
+		for (auto move : moves)
+		{
+			Position nextPos = { pos.rank + move[0], pos.file + move[1] };
+			if (isInsideBoard(nextPos))
+			{
+				if (containsOwnPiece(nextPos, pc.getColor())) continue;
+				squares.push_back(nextPos);
+			}
+		}
+		break;
 	default:
 		break;
 	}
