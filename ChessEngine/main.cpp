@@ -10,7 +10,7 @@ int main()
 	bool success = parser.parse(fen, game);
 
 	if (success)
-		std::cout << "Parsing succesful\n";
+		game.printBoard();
 	else
 		std::cout << "Parsing failed\n";
 }

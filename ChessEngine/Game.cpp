@@ -27,10 +27,38 @@ void Game::setPiece(const fenparserpp::BoardPos& bpos, fenparserpp::Piece piece,
 	else
 		pc = PieceColor::BLACK;
 
-	// TODO: different pieces
+	switch (piece)
+	{
+	case fenparserpp::Piece::BISHOP:
+		board[rank][file].setPiece(Piece(PieceKind::BISHOP, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	case fenparserpp::Piece::KING:
+		board[rank][file].setPiece(Piece(PieceKind::KING, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	case fenparserpp::Piece::KNIGHT:
+		board[rank][file].setPiece(Piece(PieceKind::KNIGHT, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	case fenparserpp::Piece::PAWN:
+		board[rank][file].setPiece(Piece(PieceKind::PAWN, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	case fenparserpp::Piece::QUEEN:
+		board[rank][file].setPiece(Piece(PieceKind::QUEEN, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	case fenparserpp::Piece::ROOK:
+		board[rank][file].setPiece(Piece(PieceKind::ROOK, pc));
+		board[rank][file].setOccupied(true);
+		break;
+	default:
+		board[rank][file].setPiece(Piece(PieceKind::NONE, pc));
+		board[rank][file].setOccupied(false);
+		break;
+	}
 
-	board[rank][file].setPiece(new Piece(pc));
-	board[rank][file].setIsOccupied(true);
 }
 
 void Game::setCastleRight(fenparserpp::CastleRight right)
@@ -85,4 +113,16 @@ void Game::setToPlay(fenparserpp::PieceColor color)
 Game::Game()
 {
 	reset();
+}
+
+void Game::printBoard() const
+{
+	for (int i = 7; i > -1; i--)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			std::cout << board[i][j] << " ";
+		}
+		std::cout << "\n";
+	}
 }

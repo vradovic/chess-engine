@@ -17,6 +17,7 @@ public:
 	void setToPlay(fenparserpp::PieceColor color);
 
 	Game();
+	void printBoard() const;
 
 private:
 	Square board[8][8];

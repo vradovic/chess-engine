@@ -30,6 +30,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceColor.h" />
+    <ClInclude Include="PieceKind.h" />
     <ClInclude Include="Square.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
