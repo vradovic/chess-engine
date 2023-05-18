@@ -161,6 +161,8 @@ Position Game::getKing(PieceColor color) const
 				return Position{ i,j };
 		}
 	}
+
+	return Position{ -1,-1 };
 }
 
 std::vector<Position> Game::getValidSquares(Position pos) const
@@ -170,6 +172,7 @@ std::vector<Position> Game::getValidSquares(Position pos) const
 	Piece pc = board[pos.rank][pos.file];
 
 	std::vector<std::vector<int>> moves;
+	std::vector<std::vector<int>> attacks;
 
 	switch (pc.getKind())
 	{
@@ -231,6 +234,52 @@ std::vector<Position> Game::getValidSquares(Position pos) const
 			}
 		}
 		break;
+	case PieceKind::KING:
+		moves = { {1,1},{-1,1},{-1,-1},{1,-1},{1,0},{0,1},{-1,0},{0,-1} };
+
+		for (auto move : moves)
+		{
+			Position nextPos = { pos.rank + move[0], pos.file + move[1] };
+			if (isInsideBoard(nextPos))
+			{
+				if (containsOwnPiece(nextPos, pc.getColor())) continue;
+				squares.push_back(nextPos);
+			}
+		}
+		break;
+	case PieceKind::PAWN:
+	{
+		moves = { { 1,0 } };
+		attacks = { {1,1}, {1,-1} };
+		if (pc.getColor() == PieceColor::BLACK)
+		{
+			moves[0][0] *= -1;
+			attacks[0][0] *= -1;
+			attacks[1][0] *= -1;
+		}
+
+		Position nextPos = { pos.rank + moves[0][0], pos.file + moves[0][1] };
+		if (isInsideBoard(nextPos) && !containsPiece(nextPos))
+		{
+			squares.push_back(nextPos);
+			nextPos = { nextPos.rank + moves[0][0], nextPos.file + moves[0][1] };
+			if (isInsideBoard(nextPos) && !containsPiece(nextPos) &&
+				((pc.getColor() == PieceColor::WHITE && pos.rank == 1) || (pc.getColor() == PieceColor::BLACK && pos.rank == 6)))
+			{
+				squares.push_back(nextPos);
+			}
+		}
+
+		for (auto attack : attacks)
+		{
+			nextPos = { pos.rank + attack[0], pos.file + attack[1] };
+			if (isInsideBoard(nextPos) && containsEnemyPiece(nextPos, pc.getColor()))
+			{
+				squares.push_back(nextPos);
+			}
+		}
+		break;
+	}
 	default:
 		break;
 	}
