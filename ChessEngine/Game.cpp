@@ -3,7 +3,7 @@
 void Game::reset()
 {
 	castlingRights.clear();
-	enPassantPos = nullptr;
+	enPassantPos = Position{ -1,-1 };
 	halfMoves = 0;
 	fullMoves = 0;
 
@@ -11,15 +11,14 @@ void Game::reset()
 	{
 		for (size_t file = 0; file < 8; file++)
 		{
-			board[rank][file] = Square();
+			board[rank][file] = Piece();
 		}
 	}
 }
 
 void Game::setPiece(const fenparserpp::BoardPos& bpos, fenparserpp::Piece piece, fenparserpp::PieceColor pieceColor)
 {
-	int rank = bpos.getRank();
-	int file = bpos.getFile();
+	Position pos = { bpos.getRank(), bpos.getFile() };
 
 	PieceColor pc;
 	if (pieceColor == fenparserpp::PieceColor::WHITE)
@@ -30,32 +29,25 @@ void Game::setPiece(const fenparserpp::BoardPos& bpos, fenparserpp::Piece piece,
 	switch (piece)
 	{
 	case fenparserpp::Piece::BISHOP:
-		board[rank][file].setPiece(Piece(PieceKind::BISHOP, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::BISHOP, pc));
 		break;
 	case fenparserpp::Piece::KING:
-		board[rank][file].setPiece(Piece(PieceKind::KING, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::KING, pc));
 		break;
 	case fenparserpp::Piece::KNIGHT:
-		board[rank][file].setPiece(Piece(PieceKind::KNIGHT, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::KNIGHT, pc));
 		break;
 	case fenparserpp::Piece::PAWN:
-		board[rank][file].setPiece(Piece(PieceKind::PAWN, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::PAWN, pc));
 		break;
 	case fenparserpp::Piece::QUEEN:
-		board[rank][file].setPiece(Piece(PieceKind::QUEEN, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::QUEEN, pc));
 		break;
 	case fenparserpp::Piece::ROOK:
-		board[rank][file].setPiece(Piece(PieceKind::ROOK, pc));
-		board[rank][file].setOccupied(true);
+		putPiece(pos, Piece(PieceKind::ROOK, pc));
 		break;
 	default:
-		board[rank][file].setPiece(Piece(PieceKind::NONE, pc));
-		board[rank][file].setOccupied(false);
+		putPiece(pos, Piece(PieceKind::NONE, pc));
 		break;
 	}
 
@@ -86,10 +78,7 @@ void Game::setCastleRight(fenparserpp::CastleRight right)
 
 void Game::setEnPassantPos(const fenparserpp::BoardPos& bpos)
 {
-	int rank = bpos.getRank();
-	int file = bpos.getFile();
-
-	enPassantPos = &board[rank][file];
+	enPassantPos = Position{ bpos.getRank(), bpos.getFile() };
 }
 
 void Game::setHalfMoves(int hmoves)
@@ -113,6 +102,11 @@ void Game::setToPlay(fenparserpp::PieceColor color)
 Game::Game()
 {
 	reset();
+}
+
+void Game::putPiece(Position pos, Piece pc)
+{
+	board[pos.rank][pos.file] = pc;
 }
 
 void Game::printBoard() const

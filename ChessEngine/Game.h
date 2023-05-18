@@ -1,8 +1,9 @@
 #pragma once
 
 #include "fenparserpp.h"
-#include "Square.h"
 #include "CastleRight.h"
+#include "Position.h"
+#include "Piece.h"
 
 class Game : public fenparserpp::BoardListener
 {
@@ -17,13 +18,14 @@ public:
 	void setToPlay(fenparserpp::PieceColor color);
 
 	Game();
+	void putPiece(Position pos, Piece pc);
 	void printBoard() const;
 
 private:
-	Square board[8][8];
+	Piece board[8][8];
 	int halfMoves;
 	int fullMoves;
 	PieceColor toPlay;
-	Square* enPassantPos;
+	Position enPassantPos;
 	std::unordered_set<CastleRight> castlingRights;
 };

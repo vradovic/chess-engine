@@ -1,9 +1,9 @@
-#include "Square.h"
+#include "Piece.h"
 
-std::ostream& operator<<(std::ostream& os, const Square& sq)
+std::ostream& operator<<(std::ostream& os, const Piece& pc)
 {
 	char kind;
-	switch (sq.getPiece().getKind())
+	switch (pc.getKind())
 	{
 	case PieceKind::PAWN:
 		kind = 'P';
@@ -27,7 +27,7 @@ std::ostream& operator<<(std::ostream& os, const Square& sq)
 		kind = '-';
 	}
 
-	if (sq.getPiece().getColor() == PieceColor::BLACK && kind != '-')
+	if (pc.getColor() == PieceColor::BLACK && kind != '-')
 		kind = tolower(kind);
 
 	os << kind;
