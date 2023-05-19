@@ -22,6 +22,7 @@
     <ClCompile Include="fenparserpp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="minimax.cpp" />
     <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Position.cpp" />
   </ItemGroup>
@@ -29,6 +30,7 @@
     <ClInclude Include="CastleRight.h" />
     <ClInclude Include="fenparserpp.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="minimax.h" />
     <ClInclude Include="Piece.h" />
     <ClInclude Include="PieceColor.h" />
     <ClInclude Include="PieceKind.h" />

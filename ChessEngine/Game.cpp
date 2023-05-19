@@ -410,3 +410,45 @@ bool Game::isValidMove(Position source, Position target)
 
 	return !isInCheck;
 }
+
+double Game::evaluate() const
+{
+	double whiteEval = evaluateColor(PieceColor::WHITE);
+	double blackEval = evaluateColor(PieceColor::BLACK);
+	return whiteEval - blackEval;
+}
+
+double Game::evaluateColor(PieceColor color) const
+{
+	double eval = 0.0;
+
+	for (size_t i = 0; i < 8; i++)
+	{
+		for (size_t j = 0; j < 8; j++)
+		{
+			Piece piece = board[i][j];
+			if (piece.getColor() != color) continue;
+
+			switch (piece.getKind())
+			{
+			case PieceKind::PAWN:
+				eval += 1.0;
+				break;
+			case PieceKind::KNIGHT:
+			case PieceKind::BISHOP:
+				eval += 3.0;
+				break;
+			case PieceKind::ROOK:
+				eval += 5.0;
+				break;
+			case PieceKind::QUEEN:
+				eval += 9.0;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	return eval;
+}
