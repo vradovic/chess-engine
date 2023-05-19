@@ -36,6 +36,8 @@ public:
 	bool isValidMove(Position source, Position target);
 	double evaluate() const;
 	double evaluateColor(PieceColor color) const;
+	std::vector<Position> getPiecePositions(PieceColor color) const;
+	std::vector<Position> getValidMoves(Position pos);
 
 private:
 	Piece board[8][8];

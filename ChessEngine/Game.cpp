@@ -452,3 +452,33 @@ double Game::evaluateColor(PieceColor color) const
 
 	return eval;
 }
+
+std::vector<Position> Game::getPiecePositions(PieceColor color) const
+{
+	std::vector<Position> piecePositions;
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			Piece piece = board[i][j];
+			if (piece.getKind() != PieceKind::NONE && piece.getColor() == color)
+				piecePositions.push_back(Position{ i,j });
+		}
+	}
+
+	return piecePositions;
+}
+
+std::vector<Position> Game::getValidMoves(Position pos)
+{
+	std::vector<Position> validSquares = getValidSquares(pos);
+	std::vector<Position> validMoves;
+	for (auto validSquare : validSquares)
+	{
+		if (isValidMove(pos, validSquare))
+			validMoves.push_back(validSquare);
+	}
+
+	return validMoves;
+}
