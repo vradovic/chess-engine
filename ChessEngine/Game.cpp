@@ -470,15 +470,48 @@ std::vector<Position> Game::getPiecePositions(PieceColor color) const
 	return piecePositions;
 }
 
-std::vector<Position> Game::getValidMoves(Position pos)
+std::vector<std::vector<Position>> Game::getValidMoves(Position pos)
 {
 	std::vector<Position> validSquares = getValidSquares(pos);
-	std::vector<Position> validMoves;
+	std::vector<std::vector<Position>> validMoves;
 	for (auto validSquare : validSquares)
 	{
 		if (isValidMove(pos, validSquare))
-			validMoves.push_back(validSquare);
+		{
+			std::vector<Position> move = { pos, validSquare };
+			validMoves.push_back(move);
+		}
 	}
 
 	return validMoves;
+}
+
+std::vector<std::vector<Position>> Game::getPlayerValidMoves(PieceColor color)
+{
+	std::vector<Position> piecePositions = getPiecePositions(color);
+	std::vector<std::vector<Position>> moves;
+	for (auto pos : piecePositions)
+	{
+		std::vector<std::vector<Position>> validMoves = getValidMoves(pos);
+		moves.insert(moves.end(), validMoves.begin(), validMoves.end());
+	}
+
+	return moves;
+}
+
+void Game::makeMove(Position source, Position target)
+{
+	Piece piece = board[source.rank][source.file];
+	board[target.rank][target.file] = piece;
+	board[source.rank][source.file] = Piece();
+}
+
+void Game::setTurn(PieceColor color)
+{
+	toPlay = color;
+}
+
+PieceColor Game::getTurn() const
+{
+	return toPlay;
 }

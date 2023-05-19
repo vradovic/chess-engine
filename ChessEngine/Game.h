@@ -37,7 +37,12 @@ public:
 	double evaluate() const;
 	double evaluateColor(PieceColor color) const;
 	std::vector<Position> getPiecePositions(PieceColor color) const;
-	std::vector<Position> getValidMoves(Position pos);
+	std::vector<std::vector<Position>> getValidMoves(Position pos);
+	std::vector<std::vector<Position>> getPlayerValidMoves(PieceColor color);
+	void makeMove(Position source, Position target);
+
+	void setTurn(PieceColor color);
+	PieceColor getTurn() const;
 
 private:
 	Piece board[8][8];
