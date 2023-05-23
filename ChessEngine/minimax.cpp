@@ -5,7 +5,19 @@ double minimax(Game& game, int depth, double alpha, double beta)
 	PieceColor turn = game.getTurn();
 	std::vector<std::vector<Position>> moves = game.getPlayerValidMoves(turn);
 
-	if (depth == 0 || moves.empty())
+	if (moves.empty()) // checkmate
+	{
+		if (turn == PieceColor::WHITE)
+		{
+			return -100.0;
+		}
+		else
+		{
+			return 100.0;
+		}
+	}
+
+	if (depth == 0)
 		return game.evaluate();
 
 	if (turn == PieceColor::WHITE) // maximizer
