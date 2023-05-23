@@ -306,6 +306,9 @@ bool Game::isCheck(PieceColor color) const
 	// Check for pawn threats
 	if (checkPawnThreat(kingPosition, color)) return true;
 
+	// Check for enemy king threats
+	if (checkKingThreat(kingPosition, color)) return true;
+
 	return false;
 }
 
@@ -386,6 +389,21 @@ bool Game::checkPawnThreat(Position pos, PieceColor color) const
 	}
 
 	return false;
+}
+
+bool Game::checkKingThreat(Position pos, PieceColor color) const
+{
+	std::vector<std::vector<int>> patterns = { {1,0},{0,1},{-1,0},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1} };
+	Piece enemyKing(PieceKind::KING, getOpposingColor(color));
+
+	for (auto pattern : patterns)
+	{
+		Position nextPos = { pos.rank + pattern[0], pos.file + pattern[1] };
+		if (isInsideBoard(nextPos) && containsPiece(nextPos, enemyKing))
+		{
+			return true;
+		}
+	}
 }
 
 PieceColor Game::getOpposingColor(PieceColor color) const

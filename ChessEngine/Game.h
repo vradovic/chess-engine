@@ -32,6 +32,7 @@ public:
 	bool checkOrthogonalThreat(Position pos, PieceColor color) const;
 	bool checkKnightThreat(Position pos, PieceColor color) const;
 	bool checkPawnThreat(Position pos, PieceColor color) const;
+	bool checkKingThreat(Position pos, PieceColor color) const;
 	PieceColor getOpposingColor(PieceColor color) const;
 	bool isValidMove(Position source, Position target);
 	double evaluate() const;
