@@ -520,6 +520,20 @@ std::vector<std::vector<Position>> Game::getPlayerValidMoves(PieceColor color)
 void Game::makeMove(Position source, Position target)
 {
 	Piece piece = board[source.rank][source.file];
+
+	// check for pawn promotion
+	if (piece.getKind() == PieceKind::PAWN)
+	{
+		if (piece.getColor() == PieceColor::WHITE && source.rank == 6)
+		{
+			piece = Piece(PieceKind::QUEEN, PieceColor::WHITE);
+		}
+		else if (piece.getColor() == PieceColor::BLACK && source.rank == 1)
+		{
+			piece = Piece(PieceKind::QUEEN, PieceColor::BLACK);
+		}
+	}
+
 	board[target.rank][target.file] = piece;
 	board[source.rank][source.file] = Piece();
 }
