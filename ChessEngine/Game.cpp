@@ -404,6 +404,8 @@ bool Game::checkKingThreat(Position pos, PieceColor color) const
 			return true;
 		}
 	}
+
+	return false;
 }
 
 PieceColor Game::getOpposingColor(PieceColor color) const
