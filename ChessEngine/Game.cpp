@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <opencv2/opencv.hpp>
 
 void Game::reset()
 {
@@ -107,6 +108,64 @@ Game::Game()
 void Game::putPiece(Position pos, Piece pc)
 {
 	board[pos.rank][pos.file] = pc;
+}
+
+void Game::printBoardGUI() const
+{
+	
+	int squareSize = 64; // Specify the size of each square in pixels
+	cv::Mat chessboard(8 * squareSize, 8 * squareSize, CV_8UC3, cv::Scalar(255, 255, 255));
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			bool isBlackSquare = (i + j) % 2 == 1; // Check if the square should be black
+
+			// Calculate the position to place the piece on the chessboard
+			int x = j * squareSize;
+			int y = i * squareSize;
+
+			// Draw the square
+			if (isBlackSquare) {
+				cv::rectangle(chessboard, cv::Rect(x, y, squareSize, squareSize), cv::Scalar(173, 216, 230), cv::FILLED);
+			}
+
+			Piece piece = board[i][j]; // Assuming board stores strings representing chess pieces
+			std::string imagePath = ""; // Path to the image file corresponding to the chess piece
+
+			// Assign the image path based on the chess piece using switch statement			
+			switch (piece.getKind())
+			{
+			case PieceKind::PAWN:
+				imagePath = "rook.png";
+				break;
+			case PieceKind::ROOK:
+				imagePath = "rook.png";
+				break;
+			case PieceKind::KNIGHT:
+				kind = 'N';
+				break;
+			case PieceKind::BISHOP:
+				kind = 'B';
+				break;
+			case PieceKind::QUEEN:
+				kind = 'Q';
+				break;
+			case PieceKind::KING:
+				kind = 'K';
+				break;
+			default:
+				kind = '-';
+			}
+
+		}
+	}
+
+	// Display the chessboard image
+	cv::imshow("Chessboard", chessboard);
+	cv::waitKey(0);
+	
 }
 
 void Game::printBoard() const

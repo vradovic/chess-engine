@@ -20,6 +20,7 @@ public:
 	Game();
 	void putPiece(Position pos, Piece pc);
 	void printBoard() const;
+	void printBoardGUI() const;
 	bool isInsideBoard(Position pos) const;
 	bool containsPiece(Position pos) const;
 	bool containsPiece(Position pos, const Piece& pc) const;

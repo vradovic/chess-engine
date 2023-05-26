@@ -36,6 +36,20 @@
     <ClInclude Include="PieceKind.h" />
     <ClInclude Include="Position.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\BlackBishop.png" />
+    <Image Include="Images\BlackKing.png" />
+    <Image Include="Images\BlackKnight.png" />
+    <Image Include="Images\BlackPawn.png" />
+    <Image Include="Images\BlackQueen.png" />
+    <Image Include="Images\BlackRook.png" />
+    <Image Include="Images\WhiteBishop.png" />
+    <Image Include="Images\WhiteKing.png" />
+    <Image Include="Images\WhiteKnight.png" />
+    <Image Include="Images\WhitePawn.png" />
+    <Image Include="Images\WhiteQueen.png" />
+    <Image Include="Images\WhiteRook.png" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
