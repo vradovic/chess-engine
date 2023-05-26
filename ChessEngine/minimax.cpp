@@ -1,6 +1,6 @@
 #include "minimax.h"
 
-double minimax_serial(Game& game, int depth, double alpha, double beta)
+double minimax_serial(Game& game, int depth, std::vector<Position>& bestMove)
 {
 	PieceColor turn = game.getTurn();
 	std::vector<std::vector<Position>> moves = game.getPlayerValidMoves(turn);
@@ -26,15 +26,15 @@ double minimax_serial(Game& game, int depth, double alpha, double beta)
 		for (auto move : moves)
 		{
 			Game newGame(game);
+			std::vector<Position> nextBestMove = { Position{-1,-1},Position{-1,-1} };
 			newGame.setTurn(game.getOpposingColor(turn));
 			newGame.makeMove(move[0], move[1]);
-			double eval = minimax_serial(newGame, depth - 1, alpha, beta);
+			double eval = minimax_serial(newGame, depth - 1, nextBestMove);
 			if (eval > maxEval)
 			{
 				maxEval = eval;
+				bestMove = { move[0], move[1] };
 			}
-			alpha = alpha > eval ? alpha : eval;
-			if (beta <= alpha) break;
 		}
 		return maxEval;
 	}
@@ -44,24 +44,25 @@ double minimax_serial(Game& game, int depth, double alpha, double beta)
 		for (auto move : moves)
 		{
 			Game newGame(game);
+			std::vector<Position> nextBestMove = { Position{-1,-1},Position{-1,-1} };
 			newGame.setTurn(game.getOpposingColor(turn));
 			newGame.makeMove(move[0], move[1]);
-			double eval = minimax_serial(newGame, depth - 1, alpha, beta);
+			double eval = minimax_serial(newGame, depth - 1, nextBestMove);
 			if (eval < minEval)
 			{
 				minEval = eval;
+				bestMove = { move[0], move[1] };
 			}
-			beta = beta < eval ? beta : eval;
-			if (beta <= alpha) break;
 		}
 		return minEval;
 	}
 }
 
-double minimax_parallel(Game& game, int depth, int cutoff, double alpha, double beta)
+double minimax_parallel(Game& game, int depth, int cutoff, std::vector<Position>& bestMove)
 {
 	PieceColor turn = game.getTurn();
 	std::vector<std::vector<Position>> moves = game.getPlayerValidMoves(turn);
+	std::vector<Position> nextBestMove = { Position{-1,-1},Position{-1,-1} };
 
 	if (moves.empty()) // checkmate
 	{
@@ -82,7 +83,7 @@ double minimax_parallel(Game& game, int depth, int cutoff, double alpha, double 
 
 	if (cutoff < 1)
 	{
-		return minimax_serial(game, depth, alpha, beta);
+		return minimax_serial(game, depth, nextBestMove);
 	}
 
 	std::vector<Game> games;
@@ -100,18 +101,19 @@ double minimax_parallel(Game& game, int depth, int cutoff, double alpha, double 
 
 	for (int i = 0; i < games.size(); i++)
 	{
-		tasks.run([&, i] {evaluations[i] = minimax_parallel(games[i], depth - 1, cutoff - 1, alpha, beta); });
+		tasks.run([&, i] {evaluations[i] = minimax_parallel(games[i], depth - 1, cutoff - 1, nextBestMove); });
 	}
 	tasks.wait();
 
 	if (turn == PieceColor::WHITE)
 	{
 		double maxEval = -1000.0;
-		for (const auto& eval : evaluations)
+		for (int i = 0; i < moves.size(); i++)
 		{
-			if (eval > maxEval)
+			if (evaluations[i] > maxEval)
 			{
-				maxEval = eval;
+				maxEval = evaluations[i];
+				bestMove = { moves[i][0], moves[i][1] };
 			}
 		}
 
@@ -120,11 +122,12 @@ double minimax_parallel(Game& game, int depth, int cutoff, double alpha, double 
 	else
 	{
 		double minEval = 1000.0;
-		for (const auto& eval : evaluations)
+		for (int i = 0; i < moves.size(); i++)
 		{
-			if (eval < minEval)
+			if (evaluations[i] < minEval)
 			{
-				minEval = eval;
+				minEval = evaluations[i];
+				bestMove = { moves[i][0], moves[i][1] };
 			}
 		}
 

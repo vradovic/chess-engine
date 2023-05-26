@@ -292,8 +292,6 @@ bool Game::isCheck(PieceColor color) const
 	Position kingPosition = getKing(color);
 	PieceColor opposingColor = color == PieceColor::WHITE ? PieceColor::BLACK : PieceColor::WHITE;
 
-	std::vector<std::vector<int>> patterns; // Threat patterns
-
 	// Check for diagonal threats
 	if (checkDiagonalThreat(kingPosition, color)) return true;
 
