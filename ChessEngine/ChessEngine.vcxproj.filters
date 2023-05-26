@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Images">
+      <UniqueIdentifier>{59ca7db4-4d0f-45a8-89d0-a768e0d0106d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -59,5 +62,43 @@
     <ClInclude Include="minimax.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Images\BlackKing.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\BlackKnight.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\BlackPawn.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\BlackQueen.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\BlackRook.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhiteBishop.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhiteKing.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhiteKnight.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhitePawn.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhiteQueen.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\WhiteRook.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
+    <Image Include="Images\BlackBishop.png">
+      <Filter>Source Files\Images</Filter>
+    </Image>
   </ItemGroup>
 </Project>

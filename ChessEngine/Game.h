@@ -1,10 +1,12 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "fenparserpp.h"
 #include "CastleRight.h"
 #include "Position.h"
 #include "Piece.h"
 #include "tbb/tbb.h"
+#include <filesystem>
 
 class Game : public fenparserpp::BoardListener
 {
@@ -21,6 +23,7 @@ public:
 	Game();
 	void putPiece(Position pos, Piece pc);
 	void printBoard() const;
+	void printBoardGUI(std::vector<Position> bestMove) const;
 	bool isInsideBoard(Position pos) const;
 	bool containsPiece(Position pos) const;
 	bool containsPiece(Position pos, const Piece& pc) const;
