@@ -4,16 +4,16 @@
 #include "tbb/tick_count.h"
 #include <fstream>
 
-int main()
+int main(int argc, char* argv[])
 {
-	std::ifstream inputFile("Chess positions.txt");  
+	std::ifstream inputFile(argv[1]);
 
 	if (!inputFile.is_open()) {
 		std::cout << "Failed to open the file." << std::endl;
 		return 1;
 	}
 
-	std::ofstream outputFile("result.txt"); 
+	std::ofstream outputFile(argv[2]);
 
 	if (!outputFile.is_open()) {
 		std::cout << "Failed to open the file." << std::endl;
@@ -32,7 +32,6 @@ int main()
 			outputFile << "Fen: " << line << std::endl;
 			std::vector<Position> bestMove = { Position{-1,-1}, Position{-1,-1} };
 
-			game.printBoardGUI(bestMove);
 			std::cout << "Calculating Serial...\n";
 			tbb::tick_count startTime = tbb::tick_count::now();
 			double eval = minimax_serial(game, 3, bestMove);			

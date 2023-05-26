@@ -101,8 +101,4 @@
       <Filter>Source Files\Images</Filter>
     </Image>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="Chess positions.txt" />
-    <Text Include="result.txt" />
-  </ItemGroup>
 </Project>

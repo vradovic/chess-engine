@@ -1,10 +1,12 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "fenparserpp.h"
 #include "CastleRight.h"
 #include "Position.h"
 #include "Piece.h"
 #include "tbb/tbb.h"
+#include <filesystem>
 
 class Game : public fenparserpp::BoardListener
 {

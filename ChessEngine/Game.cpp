@@ -1,8 +1,4 @@
 #include "Game.h"
-#define PNG_SKIP_SETJMP_CHECK
-#include <opencv2/opencv.hpp>
-#include <SFML/Graphics.hpp>
-#include <filesystem>
 
 void Game::reset()
 {
