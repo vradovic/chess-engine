@@ -597,19 +597,37 @@ bool Game::checkPawnThreat(Position pos, PieceColor color) const
 {
 	Piece pc;
 	PieceColor opposingColor = getOpposingColor(color);
+	Position nextPos;
+
 	if (color == PieceColor::WHITE)
 	{
-		pc = board[pos.rank + 1][pos.file + 1];
-		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
-		pc = board[pos.rank + 1][pos.file - 1];
-		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		nextPos = { pos.rank + 1, pos.file + 1 };
+		if (isInsideBoard(nextPos))
+		{
+			pc = board[pos.rank + 1][pos.file + 1];
+			if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		}
+		nextPos = { pos.rank + 1, pos.file - 1 };
+		if (isInsideBoard(nextPos))
+		{
+			pc = board[pos.rank + 1][pos.file - 1];
+			if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		}
 	}
 	else
 	{
-		pc = board[pos.rank - 1][pos.file + 1];
-		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
-		pc = board[pos.rank - 1][pos.file - 1];
-		if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		nextPos = { pos.rank - 1 ,pos.file + 1 };
+		if (isInsideBoard(nextPos))
+		{
+			pc = board[pos.rank - 1][pos.file + 1];
+			if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		}
+		nextPos = { pos.rank - 1 ,pos.file - 1 };
+		if (isInsideBoard(nextPos))
+		{
+			pc = board[pos.rank - 1][pos.file - 1];
+			if (pc.getKind() == PieceKind::PAWN && pc.getColor() == opposingColor) return true;
+		}
 	}
 
 	return false;
