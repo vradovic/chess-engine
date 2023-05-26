@@ -21,7 +21,7 @@ public:
 	Game();
 	void putPiece(Position pos, Piece pc);
 	void printBoard() const;
-	void printBoardGUI() const;
+	void printBoardGUI(std::vector<Position> bestMove) const;
 	bool isInsideBoard(Position pos) const;
 	bool containsPiece(Position pos) const;
 	bool containsPiece(Position pos, const Piece& pc) const;

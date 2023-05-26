@@ -50,6 +50,10 @@
     <Image Include="Images\WhiteQueen.png" />
     <Image Include="Images\WhiteRook.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Chess positions.txt" />
+    <Text Include="result.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

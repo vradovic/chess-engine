@@ -1,5 +1,8 @@
 #include "Game.h"
+#define PNG_SKIP_SETJMP_CHECK
 #include <opencv2/opencv.hpp>
+#include <SFML/Graphics.hpp>
+#include <filesystem>
 
 void Game::reset()
 {
@@ -110,62 +113,230 @@ void Game::putPiece(Position pos, Piece pc)
 	board[pos.rank][pos.file] = pc;
 }
 
-void Game::printBoardGUI() const
+void Game::printBoardGUI(std::vector<Position> bestMove) const
 {
-	
-	int squareSize = 64; // Specify the size of each square in pixels
-	cv::Mat chessboard(8 * squareSize, 8 * squareSize, CV_8UC3, cv::Scalar(255, 255, 255));
+	sf::RenderWindow window(sf::VideoMode(800, 800), "Chess Board");
 
-	for (int i = 0; i < 8; i++)
-	{
-		for (int j = 0; j < 8; j++)
-		{
-			bool isBlackSquare = (i + j) % 2 == 1; // Check if the square should be black
+	// Load the images for chess pieces
+	sf::Texture texture;
 
-			// Calculate the position to place the piece on the chessboard
-			int x = j * squareSize;
-			int y = i * squareSize;
+	// Load the piece images
+	sf::Texture pieceTextures[12];
+	std::string pieceNames[12] = { "WhiteRook", "WhiteKnight", "WhiteBishop", "WhiteQueen", "WhiteKing", "WhitePawn", "BlackRook", "BlackKnight", "BlackBishop", "BlackQueen", "BlackKing", "BlackPawn" };
 
-			// Draw the square
-			if (isBlackSquare) {
-				cv::rectangle(chessboard, cv::Rect(x, y, squareSize, squareSize), cv::Scalar(173, 216, 230), cv::FILLED);
-			}
-
-			Piece piece = board[i][j]; // Assuming board stores strings representing chess pieces
-			std::string imagePath = ""; // Path to the image file corresponding to the chess piece
-
-			// Assign the image path based on the chess piece using switch statement			
-			switch (piece.getKind())
-			{
-			case PieceKind::PAWN:
-				imagePath = "rook.png";
-				break;
-			case PieceKind::ROOK:
-				imagePath = "rook.png";
-				break;
-			case PieceKind::KNIGHT:
-				kind = 'N';
-				break;
-			case PieceKind::BISHOP:
-				kind = 'B';
-				break;
-			case PieceKind::QUEEN:
-				kind = 'Q';
-				break;
-			case PieceKind::KING:
-				kind = 'K';
-				break;
-			default:
-				kind = '-';
-			}
-
+	for (int i = 0; i < 12; i++) {
+		std::string fileName = "Images\\" + pieceNames[i] + ".png";
+		if (!pieceTextures[i].loadFromFile(fileName)) {
+			std::cout << "Failed to load piece image: " << fileName << std::endl;
+			return;
 		}
 	}
 
-	// Display the chessboard image
-	cv::imshow("Chessboard", chessboard);
-	cv::waitKey(0);
-	
+	// Set up the chessboard squares
+	const int squareSize = 100;
+	sf::RectangleShape square(sf::Vector2f(squareSize, squareSize));
+	square.setFillColor(sf::Color::White);
+	sf::RectangleShape highlight(sf::Vector2f(squareSize, squareSize));
+	highlight.setFillColor(sf::Color(26, 214, 51, 128)); // Semi-transparent green
+	sf::RectangleShape blueSquare(sf::Vector2f(squareSize, squareSize));
+	blueSquare.setFillColor(sf::Color(45, 139, 168, 90));
+
+	// Create sprites for the chess pieces
+	sf::Sprite chessPieces[12];
+
+	for (int i = 0; i < 12; i++) {
+		sf::Vector2u imageSize = pieceTextures[i].getSize();
+		float scale = static_cast<float>(squareSize - 2) / std::max(imageSize.x, imageSize.y);
+		chessPieces[i].setTexture(pieceTextures[i]);
+		chessPieces[i].setScale(scale, scale);
+	}
+	bool imageDisplayed = false;
+
+	while (window.isOpen()) {
+		sf::Event event;
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
+				window.close();
+			}
+		}
+
+		if (!imageDisplayed) {
+			window.clear();
+
+			for (int col = 0; col < 8; col++)
+			{
+				for (int row = 7; row >= 0; row--) {
+					if ((col % 2 == 0 && row % 2 == 0) || (col % 2 == 1 && row % 2 == 1)) {
+						square.setPosition(col * squareSize, row * squareSize);
+						window.draw(square);
+					}
+					else {
+						highlight.setPosition(col * squareSize, row * squareSize);
+						window.draw(highlight);
+					}
+
+
+					// Draw the piece if present
+
+					Piece piece = board[7 - row][col];
+					int index;
+					switch (piece.getKind())
+					{
+					case PieceKind::ROOK:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 0;
+						}
+						else {
+							index = 6;
+						}
+						break;
+
+					case PieceKind::KNIGHT:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 1;
+						}
+						else {
+							index = 7;
+						}
+						break;
+
+					case PieceKind::BISHOP:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 2;
+						}
+						else {
+							index = 8;
+						}
+						break;
+
+					case PieceKind::QUEEN:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 3;
+						}
+						else {
+							index = 9;
+						}
+						break;
+
+					case PieceKind::KING:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 4;
+						}
+						else {
+							index = 10;
+						}
+						break;
+
+					case PieceKind::PAWN:
+						if (piece.getColor() == PieceColor::WHITE) {
+							index = 5;
+						}
+						else {
+							index = 11;
+						}
+						break;
+
+					default:
+						index = -1;
+						continue;
+					}
+
+					chessPieces[index].setPosition(col * squareSize, row * squareSize);
+					window.draw(chessPieces[index]);
+
+				}
+			}
+			if (bestMove[0].rank != -1) {
+				highlight.setPosition(bestMove[0].file * squareSize, (7 - bestMove[0].rank) * squareSize);
+				highlight.setFillColor(sf::Color(26, 214, 51));
+				window.draw(highlight);
+				blueSquare.setPosition(bestMove[0].file * squareSize, (7 - bestMove[0].rank) * squareSize);
+				window.draw(blueSquare);
+
+				Piece piece = board[bestMove[0].rank][bestMove[0].file];
+				int index;
+				switch (piece.getKind())
+				{
+				case PieceKind::ROOK:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 0;
+					}
+					else {
+						index = 6;
+					}
+					break;
+
+				case PieceKind::KNIGHT:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 1;
+					}
+					else {
+						index = 7;
+					}
+					break;
+
+				case PieceKind::BISHOP:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 2;
+					}
+					else {
+						index = 8;
+					}
+					break;
+
+				case PieceKind::QUEEN:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 3;
+					}
+					else {
+						index = 9;
+					}
+					break;
+
+				case PieceKind::KING:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 4;
+					}
+					else {
+						index = 10;
+					}
+					break;
+
+				case PieceKind::PAWN:
+					if (piece.getColor() == PieceColor::WHITE) {
+						index = 5;
+					}
+					else {
+						index = 11;
+					}
+					break;
+
+				default:
+					index = -1;
+					break;
+				}
+				if ((bestMove[1].file % 2 == 0 && (7 - bestMove[1].rank) % 2 == 0) || (bestMove[1].file % 2 == 1 && (7-bestMove[1].rank) % 2 == 1)) {
+					square.setPosition(bestMove[1].file * squareSize, (7 - bestMove[1].rank) * squareSize);
+					window.draw(square);
+				}
+				else {
+					highlight.setPosition(bestMove[1].file * squareSize, (7 - bestMove[1].rank) * squareSize);
+					window.draw(highlight);
+				}
+				blueSquare.setPosition(bestMove[1].file * squareSize, (7 - bestMove[1].rank) * squareSize);
+				window.draw(blueSquare);				
+				chessPieces[index].setPosition(bestMove[1].file * squareSize, (7 - bestMove[1].rank) * squareSize);
+				window.draw(chessPieces[index]);
+
+
+			}
+
+			window.display();
+
+			imageDisplayed = true;
+		}
+
+	}
 }
 
 void Game::printBoard() const

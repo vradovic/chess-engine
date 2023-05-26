@@ -1,0 +1,43 @@
+Fen: 2r3k1/4p1bp/1pr1p1P1/p7/1qb2B2/6N1/1P3RPP/3QR2K b - - 0 29
+Serial verson: 
+Evaluation: -3.000000
+Best move: h7 g6
+Time elapsed: 55.679923s
+
+Parallel verson: 
+Evaluation: -3.000000
+Best move: h7 g6
+Time elapsed: 33.000470s
+
+Parallel verson: 
+Evaluation: -3.000000
+Best move: h7 g6
+Time elapsed: 33.000470s
+
+Fen: 8/4pn1p/1K5Q/r5p1/4P3/Pk2Nrn1/b7/4R2N w - - 0 1
+Serial verson: 
+Evaluation: 4.000000
+Best move: h6 e6
+Time elapsed: 26.441903s
+
+Parallel verson: 
+Evaluation: 4.000000
+Best move: h6 e6
+Time elapsed: 12.631453s
+
+Parallel verson: 
+Evaluation: 4.000000
+Best move: h6 e6
+Time elapsed: 12.631453s
+
+Fen: 1b2q3/2P3p1/p4p1P/Q1P1p1p1/2K5/3B4/3BPk2/8 w - - 0 1
+Serial verson: 
+Evaluation: 13.000000
+Best move: d2 e1
+Time elapsed: 7.795252s
+
+Parallel verson: 
+Evaluation: 13.000000
+Best move: d2 e1
+Time elapsed: 3.335836s
+
