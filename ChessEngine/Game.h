@@ -4,6 +4,7 @@
 #include "CastleRight.h"
 #include "Position.h"
 #include "Piece.h"
+#include "tbb/tbb.h"
 
 class Game : public fenparserpp::BoardListener
 {
