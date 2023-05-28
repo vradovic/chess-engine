@@ -17,7 +17,7 @@ double minimax_serial(Game& game, int depth, std::vector<Position>& bestMove)
 		}
 	}
 
-	if (depth == 0)
+	if (depth <= 0)
 		return game.evaluate();
 
 	if (turn == PieceColor::WHITE) // maximizer
@@ -76,7 +76,7 @@ double minimax_parallel(Game& game, int depth, int cutoff, std::vector<Position>
 		}
 	}
 
-	if (depth == 0)
+	if (depth <= 0)
 	{
 		return game.evaluate();
 	}
